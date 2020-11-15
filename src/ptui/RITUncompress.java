@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class RITUncompress {
@@ -20,10 +21,10 @@ public class RITUncompress {
      * main method
      * @param args - system arguments of teh compressed/uncomopressed file names
      */
-    public void main(String[] args) {
+    public static void main(String[] args) {
         //Check for usage error
         if (args.length != 2) {
-            System.out.println("Usage: java RITUncompress compressed.rit uncompressed.txt");
+            System.err.println("Command Line does not have required arguments");
             return;
         }
 
@@ -49,23 +50,33 @@ public class RITUncompress {
         }
 
         //Print it out (testing)
-        System.out.println(compressed.size());
+        //System.out.println(compressed);
 
         //Create a new RITQTNode off of the compressed image file
         RITQTNode root = parse(compressed);
+
 
         //Set the proper size of the uncompressedImage array[][]
         uncompressedImage = new int[(int)Math.sqrt(size)][(int)Math.sqrt(size)];
 
         populateUncompressed(root, uncompressedImage);
 
+
         //Get the uncompressed file to write to it
         File uncompressed = new File(args[1]);
         try {
             FileWriter writer = new FileWriter(uncompressed);
+            for(int[] row:uncompressedImage){
+                for(int i: row){
+                    writer.write(""+ i+"\n");
+                }
+            }
+            writer.close();
         } catch (IOException e) {
+            System.err.println("Output File could not be created");
             e.printStackTrace();
         }
+
     }
 
     /**
@@ -100,8 +111,8 @@ public class RITUncompress {
             populateUncompressed(root.getLowerRight(), sub4);
 
             //After those have run, fill in the big board with the new values
-            for(int row = 0; row < subregion.length; row++){
-                for(int col = 0; col < subregion.length; col++){
+            for(int row = 0; row < sub1.length; row++){
+                for(int col = 0; col < sub1.length; col++){
                     //sub1 (0,0)
                     subregion[row][col] = sub1[row][col];
                     //sub2 (0,0+sub2.length)
