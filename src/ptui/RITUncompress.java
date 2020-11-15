@@ -13,11 +13,14 @@ public class RITUncompress {
     //Global variable - size of the image
     private static int size;
 
+    //Global 2D array of uncompressed image values
+    public static int[][] uncompressedImage;
+
     /**
      * main method
      * @param args - system arguments of teh compressed/uncomopressed file names
      */
-    public static void main(String[] args) {
+    public void main(String[] args) {
         //Check for usage error
         if (args.length != 2) {
             System.out.println("Usage: java RITUncompress compressed.rit uncompressed.txt");
@@ -51,12 +54,10 @@ public class RITUncompress {
         //Create a new RITQTNode off of the compressed image file
         RITQTNode root = parse(compressed);
 
-        //Run the populateUncompressed method to fill in the 2D array of the board
-        ArrayList<Integer> result = populateUncompressed(root, new ArrayList<>());
+        //Set the proper size of the uncompressedImage array[][]
+        uncompressedImage = new int[(int)Math.sqrt(size)][(int)Math.sqrt(size)];
 
-        //More testing stuff
-        System.out.println(result);
-        System.out.println(result.size());
+        populateUncompressed(root, uncompressedImage);
 
         //Get the uncompressed file to write to it
         File uncompressed = new File(args[1]);
@@ -65,7 +66,6 @@ public class RITUncompress {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -83,17 +83,44 @@ public class RITUncompress {
     }
 
 
-    public static ArrayList<Integer> populateUncompressed(RITQTNode root,ArrayList<Integer> result){
-        if(root.getVal()==-1){
-            populateUncompressed(root.getUpperLeft(),result);
-            populateUncompressed(root.getUpperRight(),result);
-            populateUncompressed(root.getLowerLeft(),result);
-            populateUncompressed(root.getLowerRight(),result);
-        }else{
-            result.add(root.getVal());
-        }
+    public static void populateUncompressed(RITQTNode root, int[][] subregion){
+        int tempVal = root.getVal();
 
-        return result;
+        //if the value is -1, we want to split the main region into four smaller sub-regions
+        if(tempVal == -1){
+            int[][] sub1 = new int[subregion.length/2][subregion.length/2];
+            int[][] sub2 = new int[subregion.length/2][subregion.length/2];
+            int[][] sub3 = new int[subregion.length/2][subregion.length/2];
+            int[][] sub4 = new int[subregion.length/2][subregion.length/2];
+
+            //Populate those sub-regions
+            populateUncompressed(root.getUpperLeft(), sub1);
+            populateUncompressed(root.getUpperRight(), sub2);
+            populateUncompressed(root.getLowerLeft(), sub3);
+            populateUncompressed(root.getLowerRight(), sub4);
+
+            //After those have run, fill in the big board with the new values
+            for(int row = 0; row < subregion.length; row++){
+                for(int col = 0; col < subregion.length; col++){
+                    //sub1 (0,0)
+                    subregion[row][col] = sub1[row][col];
+                    //sub2 (0,0+sub2.length)
+                    subregion[row][col + sub2.length] = sub2[row][col];
+                    //sub3 (0+sub3.length, 0)
+                    subregion[row + sub3.length][col] = sub3[row][col];
+                    //sub4 (0+sub4.length, 0+sub4.length)
+                    subregion[row + sub4.length][col + sub4.length] = sub4[row][col];
+                }
+            }
+        }
+        //else, fill the current sub-region with the tempVal
+        else{
+            for(int[] row : subregion){
+                for(int i : row){
+                    row[i] = root.getVal();
+                }
+            }
+        }
     }
 
 }
