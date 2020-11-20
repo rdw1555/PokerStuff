@@ -51,8 +51,6 @@ public class RITViewer extends Application {
         //Add scene to stage and show stage
         stage.setScene(new Scene(root));
         stage.show();
-
-
     }
 
     public static void main(String[] args) {

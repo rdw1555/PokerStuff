@@ -55,6 +55,7 @@ public class RITUncompress {
         }
 
         //Save compressed as a copy (for the toString)
+        compressedCopy = new ArrayList<>();
         compressedCopy.addAll(compressed);
 
         //Create a new RITQTNode off of the compressed image file
@@ -84,6 +85,8 @@ public class RITUncompress {
         //Set the toString variable
         inFile = args[0];
         outFile = args[1];
+
+        System.out.println(printResults());
     }
 
     /**
@@ -149,8 +152,7 @@ public class RITUncompress {
      * toString method
      * @return - A string representation of the stats
      */
-    @Override
-    public String toString(){
+    public static String printResults(){
         String result = "";
 
         result += "Uncompressing: " + inFile;

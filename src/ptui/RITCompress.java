@@ -171,8 +171,7 @@ public class RITCompress {
      * toString method
      * @return - A string representation of the stats
      */
-    @Override
-    public String toString(){
+    public static String printResults(){
         String result = "";
 
         result += "Compressing " +  filename;
