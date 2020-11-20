@@ -62,6 +62,9 @@ public class RITUncompress {
         uncompressedImage = new int[(int)Math.sqrt(size)][(int)Math.sqrt(size)];
 
         populateUncompressed(root, uncompressedImage);
+        for(int[] row: uncompressedImage){
+            System.out.println(Arrays.toString(row));
+        }
 
 
         //Get the uncompressed file to write to it
@@ -132,9 +135,9 @@ public class RITUncompress {
         }
         //else, fill the current sub-region with the tempVal
         else{
-            for(int[] row : subregion){
-                for(int i : row){
-                    row[i] = root.getVal();
+            for(int row = 0; row<subregion.length; row++){
+                for(int col = 0; col < subregion.length; col++){
+                    subregion[row][col] = root.getVal();
                 }
             }
         }
