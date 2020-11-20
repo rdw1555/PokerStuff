@@ -17,6 +17,11 @@ public class RITUncompress {
     //Global 2D array of uncompressed image values
     public static int[][] uncompressedImage;
 
+    //Variables to be used in the toString
+    private static String inFile;
+    private static String outFile;
+    private static ArrayList<Integer> compressedCopy;
+
     /**
      * main method
      * @param args - system arguments of teh compressed/uncomopressed file names
@@ -49,20 +54,17 @@ public class RITUncompress {
             compressed.add(s.nextInt());
         }
 
-        //Print it out (output)
-        System.out.println("Uncompressing: " + args[0]);
-        System.out.println("QTree: " + compressed );
-        System.out.println("Output file: " + args[1]);
+        //Save compressed as a copy (for the toString)
+        compressedCopy.addAll(compressed);
 
         //Create a new RITQTNode off of the compressed image file
         RITQTNode root = parse(compressed);
 
-
         //Set the proper size of the uncompressedImage array[][]
         uncompressedImage = new int[(int)Math.sqrt(size)][(int)Math.sqrt(size)];
 
+        //Fill the 2d int array of the board
         populateUncompressed(root, uncompressedImage);
-
 
         //Get the uncompressed file to write to it
         File uncompressed = new File(args[1]);
@@ -79,7 +81,9 @@ public class RITUncompress {
             e.printStackTrace();
         }
 
-
+        //Set the toString variable
+        inFile = args[0];
+        outFile = args[1];
     }
 
     /**
@@ -96,7 +100,11 @@ public class RITUncompress {
         }
     }
 
-
+    /**
+     * populateUncompressed - Populates the 2D int array of the image
+     * @param root - the quadtree of the image
+     * @param subregion - the current recursed 2D array subregion
+     */
     public static void populateUncompressed(RITQTNode root, int[][] subregion){
         int tempVal = root.getVal();
 
@@ -135,5 +143,20 @@ public class RITUncompress {
                 }
             }
         }
+    }
+
+    /**
+     * toString method
+     * @return - A string representation of the stats
+     */
+    @Override
+    public String toString(){
+        String result = "";
+
+        result += "Uncompressing: " + inFile;
+        result += "\nQTree: " + compressedCopy;
+        result += "\nOutput file: " + outFile;
+
+        return result;
     }
 }
