@@ -7,11 +7,14 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class RITCompress {
     //Global compressed image ArrayList
     private static ArrayList<Integer> compressedList;
+    //Global initial file size
+    private static int initSize;
 
     public static void main(String[] args) {
         if (args.length != 2) {
@@ -31,39 +34,33 @@ public class RITCompress {
         //Call compress image with the board
         compressImage(board);
 
-        //Call parse to make the quadtree
-        RITQTNode root = parse(compressedList);
 
         //Write to the file
         //Get the uncompressed file to write to it
         File compressed = new File(args[1]);
         try {
             FileWriter writer = new FileWriter(compressed);
+            writer.write("" + (int)Math.pow(board.length,2)+ "\n");
             for(int val : compressedList){
-                writer.write(""+ val +"\n");
+                writer.write("" + val+ "\n");
             }
             writer.close();
         } catch (IOException e) {
             System.err.println("Output File could not be created");
             e.printStackTrace();
         }
-    }
-
-    /**
-     * parse - Parses the arraylist of compressed values to create a quadtree
-     * @param compressed - arraylist of compressed values
-     * @return - a completed quadtree of the compressed image
-     */
-    public static RITQTNode parse(ArrayList<Integer> compressed){
-        int temp = compressed.remove(0);
-        if(temp==-1){
-            return new RITQTNode(-1,parse(compressed),parse(compressed),parse(compressed),parse(compressed));
-        }else{
-            return new RITQTNode(temp);
-        }
+        //print out stats
+        System.out.println("Compressing: " + filename);
+        System.out.println("Qtree: " + compressedList);
+        System.out.println("Output file: " + args[1]);
+        System.out.println("Raw image size: " + initSize);
+        System.out.println("Compressed image size: " + (1+compressedList.size()));
+        System.out.println("Compression % " + (100-100*(compressedList.size()+1)/(double)initSize));
     }
 
     public static void compressImage(int[][] subregion){
+
+
         //if the subregion is bigger than one pixel, split it into 4 subsections
         if(subregion.length > 1){
             //Loop through the entire subregion and see if it's all the same color
@@ -72,10 +69,10 @@ public class RITCompress {
             //boolean flag saying it's not the same color
             boolean diffColor = false;
 
-            for (int[] row : subregion) {
-                for (int col : row) {
+            for (int row = 0; row < subregion.length; row++) {
+                for (int col = 0; col < subregion.length; col++) {
                     //if we've hit a new color
-                    if (row[col] != tempColor) {
+                    if (subregion[row][col] != tempColor) {
                         //raise the flag
                         diffColor = true;
                         //break out of the loops
@@ -112,18 +109,18 @@ public class RITCompress {
                 }
 
                 //Recurse with all subregions
+                //System.out.println(sub1.length +" "+ subregion.length);
+
                 compressImage(sub1);
                 compressImage(sub2);
                 compressImage(sub3);
                 compressImage(sub4);
-            }
-            else{
+            } else{
                 //It's one color
                 //Just add that number to the list
-                compressedList.add((subregion[0][0]));
+                compressedList.add(tempColor);
             }
-        }
-        else{
+        } else{
             //it wasn't bigger than one pixel
             //just add that number
             compressedList.add(subregion[0][0]);
@@ -147,15 +144,16 @@ public class RITCompress {
         }
 
         //Save the size of the board
+        initSize = rawData.size();
         int size = (int)Math.sqrt(rawData.size());
 
         //Create the board
         int[][] board = new int[size][size];
 
         //Fill the board
-        for(int[] row : board){
-            for(int col : row){
-                row[col] = rawData.remove(0);
+        for(int row =0; row< board.length; row++){
+            for(int col =0; col < board.length; col++){
+                board[row][col] = rawData.remove(0);
             }
         }
 

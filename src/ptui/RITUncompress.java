@@ -41,7 +41,7 @@ public class RITUncompress {
         assert s != null;
 
         //Set the global size variable (size of the image)
-        size = s.nextInt();
+        size = Integer.parseInt(s.next());
 
         //Create an ArrayList of the compressed image values
         ArrayList<Integer> compressed  = new ArrayList<>();
@@ -49,8 +49,10 @@ public class RITUncompress {
             compressed.add(s.nextInt());
         }
 
-        //Print it out (testing)
-        //System.out.println(compressed);
+        //Print it out (output)
+        System.out.println("Uncompressing: " + args[0]);
+        System.out.println("QTree: " + compressed );
+        System.out.println("Output file: " + args[1]);
 
         //Create a new RITQTNode off of the compressed image file
         RITQTNode root = parse(compressed);
@@ -63,6 +65,7 @@ public class RITUncompress {
 
 
         //Get the uncompressed file to write to it
+        /*
         File uncompressed = new File(args[1]);
         try {
             FileWriter writer = new FileWriter(uncompressed);
@@ -76,6 +79,9 @@ public class RITUncompress {
             System.err.println("Output File could not be created");
             e.printStackTrace();
         }
+
+         */
+
 
     }
 
