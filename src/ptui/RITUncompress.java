@@ -62,13 +62,9 @@ public class RITUncompress {
         uncompressedImage = new int[(int)Math.sqrt(size)][(int)Math.sqrt(size)];
 
         populateUncompressed(root, uncompressedImage);
-        for(int[] row: uncompressedImage){
-            System.out.println(Arrays.toString(row));
-        }
 
 
         //Get the uncompressed file to write to it
-        /*
         File uncompressed = new File(args[1]);
         try {
             FileWriter writer = new FileWriter(uncompressed);
@@ -82,8 +78,6 @@ public class RITUncompress {
             System.err.println("Output File could not be created");
             e.printStackTrace();
         }
-
-         */
 
 
     }
