@@ -16,24 +16,26 @@ public class RITCompress {
     //Global initial file size
     private static int initSize;
 
+    //Variables to be used in the toString
+    private static String filename;
+    private static String outFilename;
+
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Usage: java RITCompress uncompressed-file.txt compressed-file.rit");
             return;
         }
-
         //Instantiate the compressed image values list
         compressedList = new ArrayList<>();
 
         //Get the name of the file
-        String filename = args[0];
+        filename = args[0];
 
         //Create a board using the filename
         int[][] board = populateBoard(filename);
 
         //Call compress image with the board
         compressImage(board);
-
 
         //Write to the file
         //Get the uncompressed file to write to it
@@ -49,18 +51,17 @@ public class RITCompress {
             System.err.println("Output File could not be created");
             e.printStackTrace();
         }
-        //print out stats
-        System.out.println("Compressing: " + filename);
-        System.out.println("Qtree: " + compressedList);
-        System.out.println("Output file: " + args[1]);
-        System.out.println("Raw image size: " + initSize);
-        System.out.println("Compressed image size: " + (1+compressedList.size()));
-        System.out.println("Compression % " + (100-100*(compressedList.size()+1)/(double)initSize));
+
+        //Set the name of the output file for use in the toString
+        outFilename = args[1];
     }
 
+    /**
+     * compressImage - compresses the image into the quadtree preorder representation, recursing over the image into
+     * 4 equally sized subregions, incrementally filling the compressedList ArrayList preorder representation collection
+     * @param subregion - the current box subregion of the image
+     */
     public static void compressImage(int[][] subregion){
-
-
         //if the subregion is bigger than one pixel, split it into 4 subsections
         if(subregion.length > 1){
             //Loop through the entire subregion and see if it's all the same color
@@ -69,7 +70,7 @@ public class RITCompress {
             //boolean flag saying it's not the same color
             boolean diffColor = false;
 
-            for (int row = 0; row < subregion.length; row++) {
+            for(int row = 0; row < subregion.length; row++) {
                 for (int col = 0; col < subregion.length; col++) {
                     //if we've hit a new color
                     if (subregion[row][col] != tempColor) {
@@ -127,6 +128,11 @@ public class RITCompress {
         }
     }
 
+    /**
+     * populateBoard - populates teh 2d int array of the image board
+     * @param filename - the name of the file you're making the image of
+     * @return - a int[][] of the filled image board
+     */
     public static int[][] populateBoard(String filename){
         //Create the scanner and open the file
         Scanner s = null;
@@ -159,5 +165,23 @@ public class RITCompress {
 
         //return the board
         return board;
+    }
+
+    /**
+     * toString method
+     * @return - A string representation of the stats
+     */
+    @Override
+    public String toString(){
+        String result = "";
+
+        result += "Compressing " +  filename;
+        result += "\nQTree: " + compressedList;
+        result += "\nOutput file: " + outFilename;
+        result += "\nRaw image size: " + initSize;
+        result += "\nCompressed image size: " + (compressedList.size()+1);
+        result += "\nCompression %: " + (100-100*(compressedList.size()+1)/(double)initSize);
+
+        return result;
     }
 }
