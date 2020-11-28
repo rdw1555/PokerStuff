@@ -55,7 +55,9 @@ public class RITCompress {
         //Set the name of the output file for use in the toString
         outFilename = args[1];
 
-        System.out.println(printResults());
+        //Write stats to Stats File
+        writeStats();
+
     }
 
     /**
@@ -170,19 +172,28 @@ public class RITCompress {
     }
 
     /**
-     * toString method
-     * @return - A string representation of the stats
+     * Write Stats method
+     * @return - writes results to a new file
      */
-    public static String printResults(){
-        String result = "";
-
-        result += "Compressing " +  filename;
-        result += "\nQTree: " + compressedList;
-        result += "\nOutput file: " + outFilename;
-        result += "\nRaw image size: " + initSize;
-        result += "\nCompressed image size: " + (compressedList.size()+1);
-        result += "\nCompression %: " + (100-100*(compressedList.size()+1)/(double)initSize);
-
-        return result;
+    public static void writeStats(){
+        File Stats = new File("src/gui/Stats.txt");
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(Stats);
+        } catch (IOException e) {
+            System.err.println("File not found");
+            System.exit(0);
+        }
+        try {
+            writer.write("Compressing " + filename);
+            writer.write("\nQTree: " + compressedList);
+            writer.write("\nOutput file: " + outFilename);
+            writer.write("\nRaw image size: " + initSize);
+            writer.write("\nCompressed image size: " + (compressedList.size() + 1));
+            writer.write("\nCompression %: " + (100 - 100 * (compressedList.size() + 1) / (double) initSize));
+            writer.close();
+        }catch(IOException IE){
+            System.exit(0);
+        }
     }
 }

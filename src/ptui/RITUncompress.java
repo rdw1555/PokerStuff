@@ -86,7 +86,8 @@ public class RITUncompress {
         inFile = args[0];
         outFile = args[1];
 
-        System.out.println(printResults());
+        //Write to Stats File
+        writeStats();
     }
 
     /**
@@ -152,7 +153,8 @@ public class RITUncompress {
      * toString method
      * @return - A string representation of the stats
      */
-    public static String printResults(){
+    @Override
+    public String toString(){
         String result = "";
 
         result += "Uncompressing: " + inFile;
@@ -160,5 +162,28 @@ public class RITUncompress {
         result += "\nOutput file: " + outFile;
 
         return result;
+    }
+
+    /**
+     * Write Stats method
+     * @return - writes results to a new file
+     */
+    public static void writeStats(){
+        File Stats = new File("src/gui/Stats.txt");
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(Stats);
+        } catch (IOException e) {
+            System.err.println("File not found");
+            System.exit(0);
+        }
+        try {
+            writer.write("Uncompressing: " + inFile);
+            writer.write("\nQTree: " + compressedCopy);
+            writer.write("\nOutput file: " + outFile);
+            writer.close();
+        }catch(IOException IE){
+            System.exit(0);
+        }
     }
 }
