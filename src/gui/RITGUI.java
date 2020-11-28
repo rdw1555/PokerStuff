@@ -11,6 +11,9 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
+import ptui.RITCompress;
+import ptui.RITUncompress;
+import gui.RITViewer;
 
 public class RITGUI extends Application {
     //Label for bottom stats
@@ -253,6 +256,32 @@ public class RITGUI extends Application {
             //------------------------------------------------------TESTING HOW THIS STUFF WORKS
             //Print out that the start button was pressed
             System.out.println("\n\"Started\"");
+
+            //Create the system arguments String[]
+            String[] args = new String[2];
+
+            //Get the selected compression type and file
+            String compression = ((RadioMenuItem)typeToggle.getSelectedToggle()).getText();
+            String selectedFile = ((RadioMenuItem)fileToggle.getSelectedToggle()).getText();
+
+            //if the user is compressing a file
+            if(compression.equals("Compressing")){
+                //Set the program arguments
+                args[0] = "images/uncompressed/" + selectedFile + ".txt";
+                args[1] = "images/compressed/" + selectedFile + ".rit";
+
+                //Create a new RITCompress instance
+                RITCompress.main(args);
+            }
+            else if(compression.equals("Uncompressing")){
+                //Set the program arguments
+                args[0] = "images/compressed/" + selectedFile + ".rit";
+                args[1] = "images/uncompressed/" + selectedFile + ".txt";
+
+                //Create a new RITCompress instance
+                RITUncompress.main(args);
+            }
+
 
             //Disable the start button
             btnStart.setDisable(true);
