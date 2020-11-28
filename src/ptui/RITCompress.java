@@ -54,6 +54,8 @@ public class RITCompress {
 
         //Set the name of the output file for use in the toString
         outFilename = args[1];
+
+        System.out.println(printResults());
     }
 
     /**

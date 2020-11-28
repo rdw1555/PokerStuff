@@ -3,24 +3,14 @@ package gui;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import ptui.RITCompress;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 public class RITGUI extends Application {
     //Label for bottom stats
@@ -30,6 +20,9 @@ public class RITGUI extends Application {
     ToggleGroup typeToggle;
     //ToggleGroup for file
     ToggleGroup fileToggle;
+
+    //global start button
+    Button btnStart;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -119,12 +112,10 @@ public class RITGUI extends Application {
 
         //Create a ToggleGroup for the type
         typeToggle = new ToggleGroup();
-        typeToggle.getToggles().add(compressingC);
-        typeToggle.getToggles().add(uncompressingC);
+        typeToggle.getToggles().addAll(compressingC, uncompressingC);
 
         //Add the types to the menu
-        dropType.getItems().add(compressingC);
-        dropType.getItems().add(uncompressingC);
+        dropType.getItems().addAll(compressingC, uncompressingC);
         //IF WE'RE FEELING EXTRA IT'S REALLY EASY TO ADD LITTLE PICTURES/ICONS
 
         //Create the second menuItem of a file
@@ -148,6 +139,7 @@ public class RITGUI extends Application {
         RadioMenuItem file15 = new RadioMenuItem("stopsign256x256");
 
         //Set the events
+        //We set the individual events instead of just the menuItem event because this way we can find which individual file was selected
         file1.setOnAction(buttonHandler);
         file2.setOnAction(buttonHandler);
         file3.setOnAction(buttonHandler);
@@ -166,45 +158,32 @@ public class RITGUI extends Application {
 
         //Create a ToggleGroup for the files
         fileToggle = new ToggleGroup();
-        fileToggle.getToggles().add(file1);
-        fileToggle.getToggles().add(file2);
-        fileToggle.getToggles().add(file3);
-        fileToggle.getToggles().add(file4);
-        fileToggle.getToggles().add(file5);
-        fileToggle.getToggles().add(file6);
-        fileToggle.getToggles().add(file7);
-        fileToggle.getToggles().add(file8);
-        fileToggle.getToggles().add(file9);
-        fileToggle.getToggles().add(file10);
-        fileToggle.getToggles().add(file11);
-        fileToggle.getToggles().add(file12);
-        fileToggle.getToggles().add(file13);
-        fileToggle.getToggles().add(file14);
-        fileToggle.getToggles().add(file15);
+        //add the files to the ToggleGroup
+        fileToggle.getToggles().addAll(file1, file2, file3, file4, file5, file6, file7, file8, file9, file10, file11, file12, file13, file14, file15);
 
         //Add the file items to dropOne
-        dropFile.getItems().add(file1);
-        dropFile.getItems().add(file2);
-        dropFile.getItems().add(file3);
-        dropFile.getItems().add(file4);
-        dropFile.getItems().add(file5);
-        dropFile.getItems().add(file6);
-        dropFile.getItems().add(file7);
-        dropFile.getItems().add(file8);
-        dropFile.getItems().add(file9);
-        dropFile.getItems().add(file10);
-        dropFile.getItems().add(file11);
-        dropFile.getItems().add(file12);
-        dropFile.getItems().add(file13);
-        dropFile.getItems().add(file14);
-        dropFile.getItems().add(file15);
+        dropFile.getItems().addAll(file1, file2, file3, file4, file5, file6, file7, file8, file9, file10, file11, file12, file13, file14, file15);
 
-        //Add the file menu to the menuBar
-        menuBar.getMenus().add(dropType);
-        menuBar.getMenus().add(dropFile);
+        //Add the menus to the menuBar
+        menuBar.getMenus().addAll(dropType, dropFile);
+
+        //Create a start button to start the simulation
+        btnStart = new Button("Start");
+        //Give it the customized start action handler
+        btnStart.setOnAction(startHandler);
+        //Set it initially disabled (to prevent issues of not having a file)
+        btnStart.setDisable(true);
+
+        //Create a HBox to store the menuBar and start button in
+        HBox hbox = new HBox(menuBar, btnStart);
+        //Give the button the horizontal growth priority so that it is positioned right next to the menu bar
+        HBox.setHgrow(menuBar, Priority.NEVER);
+        HBox.setHgrow(btnStart, Priority.ALWAYS);
+
+        mainPane.setTop(hbox);
 
         //Add the menuBar to the pane
-        mainPane.setTop(menuBar);
+        //mainPane.setTop(menuBar);
         //-------------TOP MENU------------------------------------------------------------------
 
         //Set and add the scene to the stage
@@ -252,6 +231,35 @@ public class RITGUI extends Application {
                 selectedFile = "No file selected";
             //Print out the selected file
             System.out.println("Toggled File: " + selectedFile);
+
+
+            //Check if there are two toggled options in both ToggleGroups
+            if(typeToggle.getSelectedToggle() != null){
+                if(fileToggle.getSelectedToggle() != null){
+                    //Enable the start button
+                    btnStart.setDisable(false);
+                }
+            }
+        }
+    };
+
+    /**
+     * buttonHandler - let's us know when the start menuItem was selected
+     * @precondition - the compression type and files are already selected (toggled)
+     */
+    public EventHandler<ActionEvent> startHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            //------------------------------------------------------TESTING HOW THIS STUFF WORKS
+            //Print out that the start button was pressed
+            System.out.println("\n\"Started\"");
+
+            //Disable the start button
+            btnStart.setDisable(true);
+
+            //Untoggle the two toggled options
+            typeToggle.selectToggle(null);
+            fileToggle.selectToggle(null);
         }
     };
 }
