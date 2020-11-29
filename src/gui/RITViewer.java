@@ -34,6 +34,7 @@ public class RITViewer extends Application {
             in = new Scanner(imageFile);
         }catch (FileNotFoundException fne){
             System.err.println("File not found");
+            System.exit(0);
         }
         while(in.hasNextInt()){
             image.add(in.nextInt());

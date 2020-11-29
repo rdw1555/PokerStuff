@@ -4,6 +4,7 @@ package gui;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -15,6 +16,11 @@ import javafx.scene.canvas.Canvas;
 import ptui.RITCompress;
 import ptui.RITUncompress;
 import gui.RITViewer;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class RITGUI extends Application {
     //Label for bottom stats
@@ -281,6 +287,31 @@ public class RITGUI extends Application {
 
                 //Create a new RITCompress instance
                 RITUncompress.main(args);
+            }else{
+                //ArrayList to read in pixel values from file
+                ArrayList<Integer> image = new ArrayList<>();
+                //Read in the pixel values
+                Scanner in = null;
+                try {
+                    File imageFile = new File(fileName);
+                    in = new Scanner(imageFile);
+                }catch (FileNotFoundException fne){
+                    System.err.println("File not found");
+                    System.exit(0);
+                }
+                while(in.hasNextInt()){
+                    image.add(in.nextInt());
+                }
+                //Print pixels from arrayList to the canvas
+                int imageSize = (int)Math.sqrt(image.size());
+                int squareSize = 512/imageSize;
+                for(int i = 0; i < imageSize; i++){
+                    for(int j = 0; j < imageSize; j++){
+                        double color = image.remove(0)/256.0;
+                        gc.setFill(new Color(color,color,color,1.0));
+                        gc.fillRect(j*squareSize,i*squareSize,squareSize,squareSize);
+                    }
+                }
             }
 
 
