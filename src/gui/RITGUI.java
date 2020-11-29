@@ -3,7 +3,9 @@ package gui;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -34,6 +36,22 @@ public class RITGUI extends Application {
     //global start button
     Button btnStart;
 
+    //global canvas
+    Canvas canvas;
+
+    //global BorderPane
+    BorderPane mainPane;
+
+    //global GraphicsContext
+    GraphicsContext gc;
+
+    //global text scrollpane
+    ScrollPane scrollPane;
+
+    int pos = 0;
+    final int minPos = 0;
+    final int maxPos = 100;
+
     @Override
     public void start(Stage stage) throws Exception {
         /*
@@ -48,15 +66,15 @@ public class RITGUI extends Application {
          */
 
         //Create the BorderPane
-        BorderPane mainPane = new BorderPane();
+        mainPane = new BorderPane();
 
         //Set the size of the pane
         mainPane.setPrefHeight(600);
-        mainPane.setPrefWidth(600);
+        mainPane.setPrefWidth(512);
 
         //-------------BOTTOM TEXT---------------------------------------------------------------
         //Set the strings the labels will contain
-        String lblInfo = "Stats: ";
+        String lblInfo = "Stats: N/A";
 
         //Create the label
         bottomTxt = new Label();
@@ -67,8 +85,29 @@ public class RITGUI extends Application {
         //Set the text of the label
         bottomTxt.setText(lblInfo);
 
+        //Create a scroll event
+        bottomTxt.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                if (event.getDeltaY() > 0)
+                    scrollPane.setHvalue(pos == minPos ? minPos : pos--);
+                else
+                    scrollPane.setHvalue(pos == maxPos ? maxPos : pos++);
+            }
+        });
+
+        scrollPane = new ScrollPane();
+        scrollPane.setHmin(minPos);
+        scrollPane.setHmax(maxPos);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setPannable(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setContent(bottomTxt);
+
+
         //Set the mainPane's info
-        mainPane.setBottom(bottomTxt);
+        mainPane.setBottom(scrollPane);
 
         //Center the label
         BorderPane.setAlignment(bottomTxt, Pos.CENTER);
@@ -87,7 +126,10 @@ public class RITGUI extends Application {
         mainPane.setCenter(wrapperPane);
 
         //Create a canvas
-        Canvas canvas = new Canvas(); //TODO THIS WILL HAVE TO BE SET TO OUR RITViewer CANVAS
+        canvas = new Canvas();
+
+        //make a new graphics context
+        gc = canvas.getGraphicsContext2D();
 
         //Add the canvas to the wrapperPane
         wrapperPane.getChildren().add(canvas);
@@ -95,13 +137,6 @@ public class RITGUI extends Application {
         //Set the width and height of the canvas
         canvas.widthProperty().bind(wrapperPane.widthProperty());
         canvas.heightProperty().bind(wrapperPane.heightProperty());
-
-
-        //SETTING THE CANVAS TO RED JUST SO THAT WE CAN VISUALIZE WHAT IT IS FOR NOW ----------------------------------
-        StackPane holder = new StackPane();
-        holder.getChildren().add(canvas);
-        wrapperPane.getChildren().add(holder);
-        holder.setStyle("-fx-background-color: red");
         //-------------CENTER CANVAS-------------------------------------------------------------
 
 
@@ -115,17 +150,19 @@ public class RITGUI extends Application {
         //Create items to go with the compression type
         RadioMenuItem compressingC = new RadioMenuItem("Compressing");
         RadioMenuItem uncompressingC = new RadioMenuItem("Uncompressing");
+        RadioMenuItem viewing = new RadioMenuItem("View");
 
         //Set the events
         compressingC.setOnAction(buttonHandler);
         uncompressingC.setOnAction(buttonHandler);
+        viewing.setOnAction(buttonHandler);
 
         //Create a ToggleGroup for the type
         typeToggle = new ToggleGroup();
-        typeToggle.getToggles().addAll(compressingC, uncompressingC);
+        typeToggle.getToggles().addAll(compressingC, uncompressingC, viewing);
 
         //Add the types to the menu
-        dropType.getItems().addAll(compressingC, uncompressingC);
+        dropType.getItems().addAll(compressingC, uncompressingC, viewing);
         //IF WE'RE FEELING EXTRA IT'S REALLY EASY TO ADD LITTLE PICTURES/ICONS
 
         //Create the second menuItem of a file
@@ -271,6 +308,9 @@ public class RITGUI extends Application {
             String compression = ((RadioMenuItem)typeToggle.getSelectedToggle()).getText();
             String selectedFile = ((RadioMenuItem)fileToggle.getSelectedToggle()).getText();
 
+            //Create boolean flag for if it's not viewing
+            boolean notViewing = true;
+
             //if the user is compressing a file
             if(compression.equals("Compressing")){
                 //Set the program arguments
@@ -287,13 +327,17 @@ public class RITGUI extends Application {
 
                 //Create a new RITCompress instance
                 RITUncompress.main(args);
-            }else{
+            }
+            else {
+                //Set notViewing to false
+                notViewing = false;
+
                 //ArrayList to read in pixel values from file
                 ArrayList<Integer> image = new ArrayList<>();
                 //Read in the pixel values
                 Scanner in = null;
                 try {
-                    File imageFile = new File(fileName);
+                    File imageFile = new File("images/uncompressed/" + selectedFile + ".txt");
                     in = new Scanner(imageFile);
                 }catch (FileNotFoundException fne){
                     System.err.println("File not found");
@@ -313,7 +357,37 @@ public class RITGUI extends Application {
                     }
                 }
             }
+            //Mess with the stats if you're not viewing
+            if(notViewing){
+                //Read from the stats file (Stats.txt)
+                //Create a null scanner to read from the input file
+                Scanner s = null;
+                try {
+                    File in  = new File("src/gui/Stats.txt");
+                    s = new Scanner(in);
+                }catch(FileNotFoundException fne){
+                    System.err.print("File not found");
+                    System.exit(0);
+                }
 
+                //Traverse the stats
+                ArrayList<String> stats  = new ArrayList<>();
+                while(s.hasNext()){
+                    stats.add(s.nextLine());
+                }
+
+                //Traverse the stats and add it to a string
+                String strStats = "";
+                for(String stat: stats){
+                    strStats += stat + "\n";
+                }
+
+                //Set the text of the bottom text label to this string
+                bottomTxt.setText(strStats);
+            }
+            else{
+                bottomTxt.setText("Stats: N/A");
+            }
 
             //Disable the start button
             btnStart.setDisable(true);

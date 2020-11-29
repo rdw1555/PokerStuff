@@ -30,7 +30,7 @@ public class RITUncompress {
         //Check for usage error
         if (args.length != 2) {
             System.err.println("Command Line does not have required arguments");
-            return;
+            System.exit(0);
         }
 
         //Create a null scanner to read from the input file
@@ -40,6 +40,7 @@ public class RITUncompress {
             s = new Scanner(in);
         }catch(FileNotFoundException fne){
             System.err.print("File not found");
+            System.exit(0);
         }
 
         //Assert statement to make IntelliJ happy
@@ -73,13 +74,13 @@ public class RITUncompress {
             FileWriter writer = new FileWriter(uncompressed);
             for(int[] row:uncompressedImage){
                 for(int i: row){
-                    writer.write(""+ i+"\n");
+                    writer.write("" + i + "\n");
                 }
             }
             writer.close();
         } catch (IOException e) {
             System.err.println("Output File could not be created");
-            e.printStackTrace();
+            System.exit(0);
         }
 
         //Set the toString variable
@@ -183,6 +184,7 @@ public class RITUncompress {
             writer.write("\nOutput file: " + outFile);
             writer.close();
         }catch(IOException IE){
+            System.err.println("File not found");
             System.exit(0);
         }
     }

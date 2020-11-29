@@ -49,7 +49,7 @@ public class RITCompress {
             writer.close();
         } catch (IOException e) {
             System.err.println("Output File could not be created");
-            e.printStackTrace();
+            System.exit(0);
         }
 
         //Set the name of the output file for use in the toString
@@ -145,6 +145,7 @@ public class RITCompress {
             s = new Scanner(in);
         }catch(FileNotFoundException fne){
             System.err.print("File not found");
+            System.exit(0);
         }
 
         //Read in all the raw data
