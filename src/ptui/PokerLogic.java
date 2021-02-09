@@ -9,12 +9,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This is the class for the PokerLogic
+ * This is where (spoiler alert) all of the logic for poker will be handled
+ * As of rn, this has a runner method thrown at the bottom - this will eventually cease to exist, and will strictly be for testing purposes
+ * Eventually, this is basically just gonna handle housing a deck of cards, shuffling that deck, removing cards from the deck,
+ * adding those cards to player hands, putting cards back into the deck from certain players, and (most importantly) betting
+ *
+ * Please lmk if I forgot any important poker functions like a dumbass
+ */
 public class PokerLogic {
 
 
     /**
      * toString method
-     * @return - A string representation of the stats
+     * @return - A string representation of something idk
      */
     @Override
     public String toString(){
@@ -30,13 +39,7 @@ public class PokerLogic {
      * @param args - system arguments
      */
     public static void main(String[] args) {
-        //Check for usage error
-        if (args.length != 2) {
-            System.err.println("Command Line does not have required arguments");
-            System.exit(0);
-        }
-
-        //Create a null scanner to read from the input file
+         //Create a null scanner to read from the input file
         Scanner s = new Scanner(System.in);
 
         PokerLogic pl = new PokerLogic();
