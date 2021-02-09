@@ -1,11 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="RITGUI" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="PokerLogic" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
-    <option name="MAIN_CLASS_NAME" value="gui.RITGUI" />
+    <option name="MAIN_CLASS_NAME" value="ptui.PokerLogic" />
     <module name="RIT" />
+    <option name="PROGRAM_PARAMETERS" value="images/uncompressed/earth256x256.txt images/compressed/earth256x256.rit" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="gui.*" />
+        <option name="PATTERN" value="ptui.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

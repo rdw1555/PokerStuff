@@ -9,6 +9,14 @@
       <root url="jar://$USER_HOME$/Downloads/jfxdir/lib/javafx.media.jar!/" />
       <root url="jar://$USER_HOME$/Downloads/jfxdir/lib/javafx.swing.jar!/" />
       <root url="jar://$USER_HOME$/Downloads/jfxdir/lib/javafx.web.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Programming/jfxdir/lib/javafx-swt.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Programming/jfxdir/lib/javafx.base.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Programming/jfxdir/lib/javafx.controls.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Programming/jfxdir/lib/javafx.fxml.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Programming/jfxdir/lib/javafx.graphics.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Programming/jfxdir/lib/javafx.media.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Programming/jfxdir/lib/javafx.swing.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Programming/jfxdir/lib/javafx.web.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
