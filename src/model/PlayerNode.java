@@ -2,82 +2,110 @@ package model;
 
 /**
  * Player Dataclass
+ *
+ * What information does a Player contain?
+ *      -Their player number (how they're identified by the comp, may not be necessary)
+ *      -Their nickname
+ *      -The cards in their hand
+ *      -How many chips they have
+ *      -If they've busted out
  */
 public class PlayerNode {
-    /** The node's value */
+    /** The player's number */
     private int playerNum;
 
-    /** quadrant II */
-    private PlayerNode ul;
+    /** Player's nickname */
+    private String playerName;
 
-    /** quadrant I */
-    private PlayerNode ur;
+    /** Player's hand */
+    //not sure how to do this
+    //Maybe another dataclass for the deck of cards?
+    //private something playerHand;
 
-    /** quadrant III */
-    private PlayerNode ll;
+    /** Player's chips */
+    private int playerChips;
 
-    /** quadrant IV */
-    private PlayerNode lr;
+    /** If the player's lost */
+    private boolean playerLost;
 
     /**
-     * Construct a leaf node with no children.
-     * @param playerNum node value
+     * Default Constructor
+     * No player info given
      */
-    public PlayerNode(int playerNum) {
-        this(playerNum, null, null, null, null);
+    public PlayerNode() {
+        this.playerNum = 0;
+        this.playerName = "";
+        //this.playerHand = null;
+        this.playerChips = 0;
+        this.playerLost = false;
     }
 
     /**
-     * Construct a quad tree node.
-     *
-     * @param playerNum the node's value
-     * @param ul the upper left sub-node
-     * @param ur the upper right sub-node
-     * @param ll the lower left sub-node
-     * @param lr the lower right sub-node
+     * Constructor
+     * @param playerNum - the player's number
+     * @param playerName - the player's name
+     * @param playerChips - the player's chip count
+     * @param playerLost - if the player has lost or not
      */
-    public PlayerNode(int playerNum, PlayerNode ul, PlayerNode ur, PlayerNode ll, PlayerNode lr) {
+    public PlayerNode(int playerNum, String playerName, int playerChips, boolean playerLost) {
         this.playerNum = playerNum;
-        this.ul = ul;
-        this.ur = ur;
-        this.ll = ll;
-        this.lr = lr;
+        this.playerName = playerName;
+        //this.playerHand = playerHand;
+        this.playerChips = playerChips;
+        this.playerLost = playerLost;
     }
 
+    //----------------------GETTER METHODS----------------------
     /**
-     * Get the node's value.
-     *
-     * @return node's value
+     * Get the player's number
+     * @return player's num
      */
     public int getPlayerNum() { return this.playerNum; }
 
     /**
-     * Get the upper left sub-node.
-     *
-     * @return upper left sub-node
+     * Get the player's nickname
+     * @return player's nickname
      */
-    public PlayerNode getUpperLeft() { return this.ul; }
+    public String getPlayerName() { return this.playerName; }
 
     /**
-     * Get the upper right sub-node.
-     *
-     * @return upper right sub-node
+     * Get the player's hand
+     * @return the player's hand
      */
-    public PlayerNode getUpperRight() { return this.ur; }
+    //public something getPlayerHand() { return this.playerHand; }
 
     /**
-     * Get the lower left sub-node.
-     *
-     * @return lower left sub-node
+     * Get the player's chip count
+     * @return chip count
      */
-    public PlayerNode getLowerLeft() { return this.ll; }
+    public int getPlayerChips() { return this.playerChips; }
 
     /**
-     * Get the lower right sub-node
-     *
-     * @return lower right sub-node
+     * Tell if the player has lost
+     * @return player lost boolean
      */
-    public PlayerNode getLowerRight() { return this.lr; }
+    public boolean getPlayerLost() { return this.playerLost; }
+    //----------------------------------------------------------
+
+
+    //----------------------SETTER METHODS----------------------
+    /**
+     * Set's the players name to the given variable (can be used if they change their name)
+     * @param name - the name changed by the player
+     */
+    public void setPlayerName(String name) { this.playerName = name; }
+
+    /**
+     * Increase the player's chip amount
+     * (this can also be used to decrease it, just use a negative number)
+     */
+    public void setPlayerChips(int amount) { this.playerChips += amount; }
+
+    /**
+     * Triggered when the player loses
+     */
+    public void setPlayerLost() { this.playerLost = true; }
+    //----------------------------------------------------------
 
     @Override
     public String toString() {

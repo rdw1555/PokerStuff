@@ -16,11 +16,11 @@ import java.util.Scanner;
  * Eventually, this is basically just gonna handle housing a deck of cards, shuffling that deck, removing cards from the deck,
  * adding those cards to player hands, putting cards back into the deck from certain players, and (most importantly) betting
  *
+ * (Should operate on a hand by hand basis)
+ *
  * Please lmk if I forgot any important poker functions like a dumbass
  */
 public class PokerLogic {
-
-
     /**
      * toString method
      * @return - A string representation of something idk
