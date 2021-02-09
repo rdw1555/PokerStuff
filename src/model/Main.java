@@ -1,9 +1,9 @@
 package model;
 
 public class Main {
-    PlayerNode root;
+    PlayerClass root;
 
-    public Main(PlayerNode root) {
+    public Main(PlayerClass root) {
         this.root = root;
     }
 }

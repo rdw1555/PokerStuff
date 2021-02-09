@@ -10,7 +10,7 @@ package model;
  *      -How many chips they have
  *      -If they've busted out
  */
-public class PlayerNode {
+public class PlayerClass {
     /** The player's number */
     private int playerNum;
 
@@ -32,7 +32,7 @@ public class PlayerNode {
      * Default Constructor
      * No player info given
      */
-    public PlayerNode() {
+    public PlayerClass() {
         this.playerNum = 0;
         this.playerName = "";
         //this.playerHand = null;
@@ -47,7 +47,7 @@ public class PlayerNode {
      * @param playerChips - the player's chip count
      * @param playerLost - if the player has lost or not
      */
-    public PlayerNode(int playerNum, String playerName, int playerChips, boolean playerLost) {
+    public PlayerClass(int playerNum, String playerName, int playerChips, boolean playerLost) {
         this.playerNum = playerNum;
         this.playerName = playerName;
         //this.playerHand = playerHand;
@@ -57,30 +57,35 @@ public class PlayerNode {
 
     //----------------------GETTER METHODS----------------------
     /**
+     * getPlayerNum
      * Get the player's number
      * @return player's num
      */
     public int getPlayerNum() { return this.playerNum; }
 
     /**
+     * getPlayerName
      * Get the player's nickname
      * @return player's nickname
      */
     public String getPlayerName() { return this.playerName; }
 
     /**
+     * getPlayerHand
      * Get the player's hand
      * @return the player's hand
      */
     //public something getPlayerHand() { return this.playerHand; }
 
     /**
+     * getPlayerChips
      * Get the player's chip count
      * @return chip count
      */
     public int getPlayerChips() { return this.playerChips; }
 
     /**
+     * getPlayerLost
      * Tell if the player has lost
      * @return player lost boolean
      */
@@ -90,21 +95,34 @@ public class PlayerNode {
 
     //----------------------SETTER METHODS----------------------
     /**
+     * setPlayerName
      * Set's the players name to the given variable (can be used if they change their name)
      * @param name - the name changed by the player
      */
     public void setPlayerName(String name) { this.playerName = name; }
 
     /**
+     * setPlayerHand
+     * Set's the player's hand to the given cards
+     * @param cards - the cards dealt to the player
+     */
+    //public void setPlayerHand(cards) { }
+
+    /**
+     * setPlayerChips
      * Increase the player's chip amount
      * (this can also be used to decrease it, just use a negative number)
      */
     public void setPlayerChips(int amount) { this.playerChips += amount; }
 
     /**
+     * setPlayerLost
      * Triggered when the player loses
      */
     public void setPlayerLost() { this.playerLost = true; }
+
+    //Note that there's no method to set the player's number
+    //This is due to the fact that the player's Identification Number should never be changed throughout the game
     //----------------------------------------------------------
 
     @Override
