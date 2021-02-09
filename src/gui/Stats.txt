@@ -1,3 +1,0 @@
-Uncompressing: images/compressed/simple32x32.rit
-QTree: [-1, 0, 85, 170, 255]
-Output file: images/uncompressed/simple32x32.txt

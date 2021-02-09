@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class RITCompress {
+public class PokerLogic {
     //Global compressed image ArrayList
     private static ArrayList<Integer> compressedList;
     //Global initial file size
