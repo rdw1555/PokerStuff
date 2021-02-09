@@ -1,13 +1,12 @@
 package ptui;
 
-import model.RITQTNode;
+import model.PlayerNode;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class PokerLogic {
@@ -60,7 +59,7 @@ public class PokerLogic {
         compressedCopy.addAll(compressed);
 
         //Create a new RITQTNode off of the compressed image file
-        RITQTNode root = parse(compressed);
+        PlayerNode root = parse(compressed);
 
         //Set the proper size of the uncompressedImage array[][]
         uncompressedImage = new int[(int)Math.sqrt(size)][(int)Math.sqrt(size)];
@@ -96,12 +95,12 @@ public class PokerLogic {
      * @param compressed - arraylist of compressed values
      * @return - a completed quadtree of the compressed image
      */
-    public static RITQTNode parse(ArrayList<Integer> compressed){
+    public static PlayerNode parse(ArrayList<Integer> compressed){
         int temp = compressed.remove(0);
         if(temp==-1){
-            return new RITQTNode(-1,parse(compressed),parse(compressed),parse(compressed),parse(compressed));
+            return new PlayerNode(-1,parse(compressed),parse(compressed),parse(compressed),parse(compressed));
         }else{
-            return new RITQTNode(temp);
+            return new PlayerNode(temp);
         }
     }
 
@@ -110,7 +109,7 @@ public class PokerLogic {
      * @param root - the quadtree of the image
      * @param subregion - the current recursed 2D array subregion
      */
-    public static void populateUncompressed(RITQTNode root, int[][] subregion){
+    public static void populateUncompressed(PlayerNode root, int[][] subregion){
         int tempVal = root.getVal();
 
         //if the value is -1, we want to split the main region into four smaller sub-regions

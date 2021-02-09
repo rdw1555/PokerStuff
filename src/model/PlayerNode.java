@@ -1,36 +1,29 @@
 package model;
 
 /**
- * Represents a Quadtree node in the tree for an image compressed using the
- * Rich Image Tool file format.
- *
- * A node contains a value which is either a grayscale color (0-255) for a
- * region, or QTree.QUAD_SPLIT meaning this node cannot hold a single color
- * and thus has split itself into 4 sub-regions.
- *
- * @author Sean Strout @ RIT
+ * Player Dataclass
  */
-public class RITQTNode {
+public class PlayerNode {
     /** The node's value */
     private int val;
 
     /** quadrant II */
-    private RITQTNode ul;
+    private PlayerNode ul;
 
     /** quadrant I */
-    private RITQTNode ur;
+    private PlayerNode ur;
 
     /** quadrant III */
-    private RITQTNode ll;
+    private PlayerNode ll;
 
     /** quadrant IV */
-    private RITQTNode lr;
+    private PlayerNode lr;
 
     /**
      * Construct a leaf node with no children.
      * @param val node value
      */
-    public RITQTNode(int val) {
+    public PlayerNode(int val) {
         this(val, null, null, null, null);
     }
 
@@ -43,7 +36,7 @@ public class RITQTNode {
      * @param ll the lower left sub-node
      * @param lr the lower right sub-node
      */
-    public RITQTNode(int val, RITQTNode ul, RITQTNode ur, RITQTNode ll, RITQTNode lr) {
+    public PlayerNode(int val, PlayerNode ul, PlayerNode ur, PlayerNode ll, PlayerNode lr) {
         this.val = val;
         this.ul = ul;
         this.ur = ur;
@@ -63,28 +56,28 @@ public class RITQTNode {
      *
      * @return upper left sub-node
      */
-    public RITQTNode getUpperLeft() { return this.ul; }
+    public PlayerNode getUpperLeft() { return this.ul; }
 
     /**
      * Get the upper right sub-node.
      *
      * @return upper right sub-node
      */
-    public RITQTNode getUpperRight() { return this.ur; }
+    public PlayerNode getUpperRight() { return this.ur; }
 
     /**
      * Get the lower left sub-node.
      *
      * @return lower left sub-node
      */
-    public RITQTNode getLowerLeft() { return this.ll; }
+    public PlayerNode getLowerLeft() { return this.ll; }
 
     /**
      * Get the lower right sub-node
      *
      * @return lower right sub-node
      */
-    public RITQTNode getLowerRight() { return this.lr; }
+    public PlayerNode getLowerRight() { return this.lr; }
 
     @Override
     public String toString() {

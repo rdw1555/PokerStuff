@@ -1,9 +1,9 @@
 package model;
 
 public class Main {
-    RITQTNode root;
+    PlayerNode root;
 
-    public Main(RITQTNode root) {
+    public Main(PlayerNode root) {
         this.root = root;
     }
 }
