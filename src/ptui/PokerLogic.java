@@ -11,40 +11,71 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class PokerLogic {
-    //Global compressed image ArrayList
-    private static ArrayList<Integer> compressedList;
-    //Global initial file size
-    private static int initSize;
+    //Global variable - size of the image
+    private static int size;
+
+    //Global 2D array of uncompressed image values
+    public static int[][] uncompressedImage;
 
     //Variables to be used in the toString
-    private static String filename;
-    private static String outFilename;
+    private static String inFile;
+    private static String outFile;
+    private static ArrayList<Integer> compressedCopy;
 
+    /**
+     * main method
+     * @param args - system arguments of teh compressed/uncomopressed file names
+     */
     public static void main(String[] args) {
+        //Check for usage error
         if (args.length != 2) {
-            System.out.println("Usage: java RITCompress uncompressed-file.txt compressed-file.rit");
-            return;
+            System.err.println("Command Line does not have required arguments");
+            System.exit(0);
         }
-        //Instantiate the compressed image values list
-        compressedList = new ArrayList<>();
 
-        //Get the name of the file
-        filename = args[0];
-
-        //Create a board using the filename
-        int[][] board = populateBoard(filename);
-
-        //Call compress image with the board
-        compressImage(board);
-
-        //Write to the file
-        //Get the uncompressed file to write to it
-        File compressed = new File(args[1]);
+        //Create a null scanner to read from the input file
+        Scanner s = null;
         try {
-            FileWriter writer = new FileWriter(compressed);
-            writer.write("" + (int)Math.pow(board.length,2)+ "\n");
-            for(int val : compressedList){
-                writer.write("" + val+ "\n");
+            File in  = new File(args[0]);
+            s = new Scanner(in);
+        }catch(FileNotFoundException fne){
+            System.err.print("File not found");
+            System.exit(0);
+        }
+
+        //Assert statement to make IntelliJ happy
+        assert s != null;
+
+        //Set the global size variable (size of the image)
+        size = Integer.parseInt(s.next());
+
+        //Create an ArrayList of the compressed image values
+        ArrayList<Integer> compressed  = new ArrayList<>();
+        while(s.hasNextInt()){
+            compressed.add(s.nextInt());
+        }
+
+        //Save compressed as a copy (for the toString)
+        compressedCopy = new ArrayList<>();
+        compressedCopy.addAll(compressed);
+
+        //Create a new RITQTNode off of the compressed image file
+        RITQTNode root = parse(compressed);
+
+        //Set the proper size of the uncompressedImage array[][]
+        uncompressedImage = new int[(int)Math.sqrt(size)][(int)Math.sqrt(size)];
+
+        //Fill the 2d int array of the board
+        populateUncompressed(root, uncompressedImage);
+
+        //Get the uncompressed file to write to it
+        File uncompressed = new File(args[1]);
+        try {
+            FileWriter writer = new FileWriter(uncompressed);
+            for(int[] row:uncompressedImage){
+                for(int i: row){
+                    writer.write("" + i + "\n");
+                }
             }
             writer.close();
         } catch (IOException e) {
@@ -52,124 +83,86 @@ public class PokerLogic {
             System.exit(0);
         }
 
-        //Set the name of the output file for use in the toString
-        outFilename = args[1];
+        //Set the toString variable
+        inFile = args[0];
+        outFile = args[1];
 
-        //Write stats to Stats File
+        //Write to Stats File
         writeStats();
-
     }
 
     /**
-     * compressImage - compresses the image into the quadtree preorder representation, recursing over the image into
-     * 4 equally sized subregions, incrementally filling the compressedList ArrayList preorder representation collection
-     * @param subregion - the current box subregion of the image
+     * parse - Parses the arraylist of compressed values to create a quadtree
+     * @param compressed - arraylist of compressed values
+     * @return - a completed quadtree of the compressed image
      */
-    public static void compressImage(int[][] subregion){
-        //if the subregion is bigger than one pixel, split it into 4 subsections
-        if(subregion.length > 1){
-            //Loop through the entire subregion and see if it's all the same color
-            int tempColor = subregion[0][0];
-
-            //boolean flag saying it's not the same color
-            boolean diffColor = false;
-
-            for(int row = 0; row < subregion.length; row++) {
-                for (int col = 0; col < subregion.length; col++) {
-                    //if we've hit a new color
-                    if (subregion[row][col] != tempColor) {
-                        //raise the flag
-                        diffColor = true;
-                        //break out of the loops
-                        break;
-                    }
-                }
-            }
-
-            //Here, check if the flag was raised
-            if(diffColor){
-                //It's different colors
-                //Add a -1 to the compressedList
-                compressedList.add(-1);
-
-                //Split it into 4 different subsections and recurse with them
-                //Create the 4 subregions
-                int[][] sub1 = new int[subregion.length/2][subregion.length/2];
-                int[][] sub2 = new int[subregion.length/2][subregion.length/2];
-                int[][] sub3 = new int[subregion.length/2][subregion.length/2];
-                int[][] sub4 = new int[subregion.length/2][subregion.length/2];
-
-                //Fill them
-                for(int row = 0; row < sub1.length; row++){
-                    for(int col = 0; col < sub1.length; col++){
-                        //sub1 (0,0)
-                        sub1[row][col] = subregion[row][col];
-                        //sub2 (0,0+sub2.length)
-                        sub2[row][col] = subregion[row][col + sub2.length];
-                        //sub3 (0+sub3.length, 0)
-                        sub3[row][col] = subregion[row + sub3.length][col];
-                        //sub4 (0+sub4.length, 0+sub4.length)
-                        sub4[row][col] = subregion[row + sub4.length][col + sub4.length];
-                    }
-                }
-
-                //Recurse with all subregions
-                //System.out.println(sub1.length +" "+ subregion.length);
-
-                compressImage(sub1);
-                compressImage(sub2);
-                compressImage(sub3);
-                compressImage(sub4);
-            } else{
-                //It's one color
-                //Just add that number to the list
-                compressedList.add(tempColor);
-            }
-        } else{
-            //it wasn't bigger than one pixel
-            //just add that number
-            compressedList.add(subregion[0][0]);
+    public static RITQTNode parse(ArrayList<Integer> compressed){
+        int temp = compressed.remove(0);
+        if(temp==-1){
+            return new RITQTNode(-1,parse(compressed),parse(compressed),parse(compressed),parse(compressed));
+        }else{
+            return new RITQTNode(temp);
         }
     }
 
     /**
-     * populateBoard - populates teh 2d int array of the image board
-     * @param filename - the name of the file you're making the image of
-     * @return - a int[][] of the filled image board
+     * populateUncompressed - Populates the 2D int array of the image
+     * @param root - the quadtree of the image
+     * @param subregion - the current recursed 2D array subregion
      */
-    public static int[][] populateBoard(String filename){
-        //Create the scanner and open the file
-        Scanner s = null;
-        try {
-            File in  = new File(filename);
-            s = new Scanner(in);
-        }catch(FileNotFoundException fne){
-            System.err.print("File not found");
-            System.exit(0);
-        }
+    public static void populateUncompressed(RITQTNode root, int[][] subregion){
+        int tempVal = root.getVal();
 
-        //Read in all the raw data
-        ArrayList<Integer> rawData  = new ArrayList<>();
-        while(s.hasNextInt()){
-            rawData.add(s.nextInt());
-        }
+        //if the value is -1, we want to split the main region into four smaller sub-regions
+        if(tempVal == -1){
+            int[][] sub1 = new int[subregion.length/2][subregion.length/2];
+            int[][] sub2 = new int[subregion.length/2][subregion.length/2];
+            int[][] sub3 = new int[subregion.length/2][subregion.length/2];
+            int[][] sub4 = new int[subregion.length/2][subregion.length/2];
 
-        //Save the size of the board
-        initSize = rawData.size();
-        int size = (int)Math.sqrt(rawData.size());
+            //Populate those sub-regions
+            populateUncompressed(root.getUpperLeft(), sub1);
+            populateUncompressed(root.getUpperRight(), sub2);
+            populateUncompressed(root.getLowerLeft(), sub3);
+            populateUncompressed(root.getLowerRight(), sub4);
 
-        //Create the board
-        int[][] board = new int[size][size];
-
-        //Fill the board
-        for(int row =0; row< board.length; row++){
-            for(int col =0; col < board.length; col++){
-                board[row][col] = rawData.remove(0);
+            //After those have run, fill in the big board with the new values
+            for(int row = 0; row < sub1.length; row++){
+                for(int col = 0; col < sub1.length; col++){
+                    //sub1 (0,0)
+                    subregion[row][col] = sub1[row][col];
+                    //sub2 (0,0+sub2.length)
+                    subregion[row][col + sub2.length] = sub2[row][col];
+                    //sub3 (0+sub3.length, 0)
+                    subregion[row + sub3.length][col] = sub3[row][col];
+                    //sub4 (0+sub4.length, 0+sub4.length)
+                    subregion[row + sub4.length][col + sub4.length] = sub4[row][col];
+                }
             }
         }
+        //else, fill the current sub-region with the tempVal
+        else{
+            for(int row = 0; row<subregion.length; row++){
+                for(int col = 0; col < subregion.length; col++){
+                    subregion[row][col] = root.getVal();
+                }
+            }
+        }
+    }
 
-        //return the board
-        return board;
+    /**
+     * toString method
+     * @return - A string representation of the stats
+     */
+    @Override
+    public String toString(){
+        String result = "";
+
+        result += "Uncompressing: " + inFile;
+        result += "\nQTree: " + compressedCopy;
+        result += "\nOutput file: " + outFile;
+
+        return result;
     }
 
     /**
@@ -186,14 +179,12 @@ public class PokerLogic {
             System.exit(0);
         }
         try {
-            writer.write("Compressing " + filename);
-            writer.write("\nQTree: " + compressedList);
-            writer.write("\nOutput file: " + outFilename);
-            writer.write("\nRaw image size: " + initSize);
-            writer.write("\nCompressed image size: " + (compressedList.size() + 1));
-            writer.write("\nCompression %: " + (100 - 100 * (compressedList.size() + 1) / (double) initSize));
+            writer.write("Uncompressing: " + inFile);
+            writer.write("\nQTree: " + compressedCopy);
+            writer.write("\nOutput file: " + outFile);
             writer.close();
         }catch(IOException IE){
+            System.err.println("File not found");
             System.exit(0);
         }
     }
