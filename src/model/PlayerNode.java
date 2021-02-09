@@ -5,7 +5,7 @@ package model;
  */
 public class PlayerNode {
     /** The node's value */
-    private int val;
+    private int playerNum;
 
     /** quadrant II */
     private PlayerNode ul;
@@ -21,23 +21,23 @@ public class PlayerNode {
 
     /**
      * Construct a leaf node with no children.
-     * @param val node value
+     * @param playerNum node value
      */
-    public PlayerNode(int val) {
-        this(val, null, null, null, null);
+    public PlayerNode(int playerNum) {
+        this(playerNum, null, null, null, null);
     }
 
     /**
      * Construct a quad tree node.
      *
-     * @param val the node's value
+     * @param playerNum the node's value
      * @param ul the upper left sub-node
      * @param ur the upper right sub-node
      * @param ll the lower left sub-node
      * @param lr the lower right sub-node
      */
-    public PlayerNode(int val, PlayerNode ul, PlayerNode ur, PlayerNode ll, PlayerNode lr) {
-        this.val = val;
+    public PlayerNode(int playerNum, PlayerNode ul, PlayerNode ur, PlayerNode ll, PlayerNode lr) {
+        this.playerNum = playerNum;
         this.ul = ul;
         this.ur = ur;
         this.ll = ll;
@@ -49,7 +49,7 @@ public class PlayerNode {
      *
      * @return node's value
      */
-    public int getVal() { return this.val; }
+    public int getPlayerNum() { return this.playerNum; }
 
     /**
      * Get the upper left sub-node.
@@ -81,6 +81,6 @@ public class PlayerNode {
 
     @Override
     public String toString() {
-        return String.valueOf(this.val);
+        return String.valueOf(this.playerNum);
     }
 }
