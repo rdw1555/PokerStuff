@@ -44,4 +44,36 @@ public class Card {
      * @return - suit
      */
     public String getSuit() { return this.suit; }
+
+    /**
+     * toString() - overloaded method
+     * @return - String value of a Card
+     */
+    @Override
+    public String toString(){
+        //Create a resultant string
+        String result = "";
+
+        //Check if it's a face card or not
+        //Check the value, if it's above 11 it's special, else it's just the number
+        switch (cardNum) {
+            case 11 -> result += "Jack";
+            case 12 -> result += "Queen";
+            case 13 -> result += "King";
+            case 14 -> result += "Ace";
+            default -> result += "" + cardNum;
+        }
+
+        //Now check suit
+        switch (this.suit) {
+            case "Heart" -> result += " of Hearts";
+            case "Clubs" -> result += " of Clubs";
+            case "Spades" -> result += " of Spades";
+            case "Diamonds" -> result += " of Diamonds";
+            default -> result += " of NO SUIT";
+        }
+
+        //Finally, return this result
+        return result;
+    }
 }
