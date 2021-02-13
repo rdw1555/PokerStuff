@@ -68,7 +68,7 @@ public class PokerLogic {
         //Loop through the number of players
         for(int i = 0; i < playerNames.size(); i++){
             //Create a temporary player (10000 default chips, they haven't lost yet)
-            PlayerClass tempPlayer = new PlayerClass(i, playerNames.get(i), null, 10000, false);
+            PlayerClass tempPlayer = new PlayerClass(i, playerNames.get(i), 10000, false);
 
             //Add that temporary player to the list of players
             players.add(tempPlayer);

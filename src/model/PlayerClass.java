@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class PlayerClass {
     /** The player's number */
-    private int playerNum;
+    private final int playerNum;
 
     /** Player's nickname */
     private String playerName;
@@ -33,11 +33,40 @@ public class PlayerClass {
      * No player info given
      */
     public PlayerClass() {
+        //Filler player number
         this.playerNum = -1;
+        //Filler name
         this.playerName = "";
-        this.playerHand = null;
+
+        //Filler cards for the Card[]
+        Card temp1 = new Card(0, "none");
+        Card temp2 = new Card(0, "none");
+        this.playerHand = new Card[]{temp1, temp2};
+
+        //Filler chip values
         this.playerChips = 0;
-        this.playerLost = false;
+        //The player 'has' lost
+        this.playerLost = true;
+    }
+
+    /**
+     * Overloaded method for Player dataclass, one without a given hand but with given variables
+     * @param playerNum - the player's number
+     * @param playerName - the player's name
+     * @param playerChips - the player's chip count
+     * @param playerLost - if the player has lost or not
+     */
+    public PlayerClass(int playerNum, String playerName, int playerChips, boolean playerLost) {
+        this.playerNum = playerNum;
+        this.playerName = playerName;
+
+        //Filler cards for the Card[]
+        Card temp1 = new Card(0, "none");
+        Card temp2 = new Card(0, "none");
+        this.playerHand = new Card[]{temp1, temp2};
+
+        this.playerChips = playerChips;
+        this.playerLost = playerLost;
     }
 
     /**

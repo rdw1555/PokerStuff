@@ -61,6 +61,7 @@ public class Card {
             case 12 -> result += "Queen";
             case 13 -> result += "King";
             case 14 -> result += "Ace";
+            case 0 -> result += "ZERO";
             default -> result += "" + cardNum;
         }
 
