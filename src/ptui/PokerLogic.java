@@ -1,5 +1,9 @@
 package ptui;
 
+import model.Card;
+import model.PlayerClass;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -14,6 +18,34 @@ import java.util.Scanner;
  * Please lmk if I forgot any important poker functions like a dumbass
  */
 public class PokerLogic {
+
+    /**
+     * makeDeck() - Creates the deck
+     * @return - the deck that is created
+     */
+    public ArrayList<Card> makeDeck(){
+        //Create a temporary ArrayList
+        ArrayList<Card> deck = new ArrayList<>();
+
+        //Loop through all of the possible card values
+        for(int i = 2; i < 15; i++) {
+            //Create temporary Cards for each possible suit
+            Card tempHeart = new Card(i, "Heart");
+            Card tempSpade = new Card(i, "Spade");
+            Card tempClub = new Card(i, "Club");
+            Card tempDiamond = new Card(i, "Diamond");
+
+            //Add the temporary Cards to the deck
+            deck.add(tempHeart);
+            deck.add(tempSpade);
+            deck.add(tempClub);
+            deck.add(tempDiamond);
+        }
+
+        //Return the deck
+        return deck;
+    }
+
     /**
      * toString method
      * @return - A string representation of something idk
@@ -32,7 +64,7 @@ public class PokerLogic {
      * @param args - system arguments
      */
     public static void main(String[] args) {
-         //Create a null scanner to read from the input file
+        //Create a null scanner to read from the input file
         Scanner s = new Scanner(System.in);
 
         PokerLogic pl = new PokerLogic();
