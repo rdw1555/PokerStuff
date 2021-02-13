@@ -3,6 +3,7 @@ package ptui;
 import model.Card;
 import model.PlayerClass;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -47,6 +48,29 @@ public class PokerLogic {
     }
 
     /**
+     * playersList() - compiles a complete list of all the players in the game
+     * @param numPlayers - the number of players currently in the game
+     * @param playerNames - an ArrayList of the names of all the players
+     * @return - an ArrayList of all the players
+     */
+    public ArrayList<PlayerClass> playersList(int numPlayers, ArrayList<String> playerNames){
+        //Create a temporary ArrayList of Players
+        ArrayList<PlayerClass> players = new ArrayList<>();
+
+        //Loop through the number of players
+        for(int i = 0; i < numPlayers; i++){
+            //Create a temporary player (10000 default chips, they haven't lost yet)
+            PlayerClass tempPlayer = new PlayerClass(i, playerNames.get(i), 10000, false);
+
+            //Add that temporary player to the list of players
+            players.add(tempPlayer);
+        }
+
+        //Return the list of players
+        return players;
+    }
+
+    /**
      * toString method
      * @return - A string representation of something idk
      */
@@ -67,8 +91,9 @@ public class PokerLogic {
         //Create a null scanner to read from the input file
         Scanner s = new Scanner(System.in);
 
+        //Create a PokerLogic object
         PokerLogic pl = new PokerLogic();
 
-        System.out.println(pl.toString());
+
     }
 }

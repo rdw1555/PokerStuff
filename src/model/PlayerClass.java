@@ -33,7 +33,7 @@ public class PlayerClass {
      * No player info given
      */
     public PlayerClass() {
-        this.playerNum = 0;
+        this.playerNum = -1;
         this.playerName = "";
         //this.playerHand = null;
         this.playerChips = 0;

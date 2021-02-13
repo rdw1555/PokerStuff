@@ -9,6 +9,13 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
+/**
+ * IMPORTANT INFO
+ * WHEN PLAYERS ARE JOINING, HAVE THEM INPUT A PLAYER NAME
+ * THEN, AFTER THE HOST STARTS THE GAME, CREATE ALL THE PLAYER OBJECTS
+ *      USE AN ARRAYLIST OF THE PLAYER NAMES
+ */
+
 public class PokerGUI extends Application {
     //Label for bottom stats
     Label bottomTxt;
