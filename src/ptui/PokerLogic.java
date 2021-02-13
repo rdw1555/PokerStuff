@@ -20,6 +20,16 @@ import java.util.Scanner;
  */
 public class PokerLogic {
 
+    ArrayList<String> playerNames;
+
+    //Default constructor
+    public PokerLogic(){
+        //Do nothing for now
+    }
+
+    //Sets the playerNames ArrayList to the given ArrayList
+    public void setPlayerNames(ArrayList<String> playerNames){ this.playerNames = playerNames; }
+
     /**
      * makeDeck() - Creates the deck
      * @return - the deck that is created
@@ -50,10 +60,9 @@ public class PokerLogic {
     /**
      * playersList() - compiles a complete list of all the players in the game
      * @param numPlayers - the number of players currently in the game
-     * @param playerNames - an ArrayList of the names of all the players
      * @return - an ArrayList of all the players
      */
-    public ArrayList<PlayerClass> playersList(int numPlayers, ArrayList<String> playerNames){
+    public ArrayList<PlayerClass> playersList(int numPlayers){
         //Create a temporary ArrayList of Players
         ArrayList<PlayerClass> players = new ArrayList<>();
 
@@ -68,6 +77,29 @@ public class PokerLogic {
 
         //Return the list of players
         return players;
+    }
+
+    public String printPlayerInfo(ArrayList<PlayerClass> players){
+        StringBuilder result = new StringBuilder();
+
+        for(PlayerClass p : players){
+            //Add a new line
+            result.append("\n");
+
+            //Add the Player Number
+            result.append("\nPlayerNum: ").append(p.getPlayerNum());
+
+            //Add the Player Name
+            result.append("\nPlayerName: ").append(p.getPlayerName());
+
+            //Add the Player's chip count
+            result.append("\nPlayer Chips: ").append(p.getPlayerChips());
+
+            //Say if the Player has lost
+            result.append("\nPlayer Lost? ").append(p.getPlayerLost());
+        }
+
+        return result.toString();
     }
 
     /**
@@ -94,6 +126,14 @@ public class PokerLogic {
         //Create a PokerLogic object
         PokerLogic pl = new PokerLogic();
 
+        //TESTING ----- Player List Outputting
+        ArrayList<String> playerNames = new ArrayList<>();
+        playerNames.add("Rick");
+        playerNames.add("Colby");
+        playerNames.add("Julian");
 
+        pl.setPlayerNames(playerNames);
+
+        System.out.println(pl.printPlayerInfo(pl.playersList(3)));
     }
 }
