@@ -59,15 +59,14 @@ public class PokerLogic {
 
     /**
      * playersList() - compiles a complete list of all the players in the game
-     * @param numPlayers - the number of players currently in the game
      * @return - an ArrayList of all the players
      */
-    public ArrayList<PlayerClass> playersList(int numPlayers){
+    public ArrayList<PlayerClass> playersList(){
         //Create a temporary ArrayList of Players
         ArrayList<PlayerClass> players = new ArrayList<>();
 
         //Loop through the number of players
-        for(int i = 0; i < numPlayers; i++){
+        for(int i = 0; i < playerNames.size(); i++){
             //Create a temporary player (10000 default chips, they haven't lost yet)
             PlayerClass tempPlayer = new PlayerClass(i, playerNames.get(i), 10000, false);
 
@@ -134,6 +133,6 @@ public class PokerLogic {
 
         pl.setPlayerNames(playerNames);
 
-        System.out.println(pl.printPlayerInfo(pl.playersList(3)));
+        System.out.println(pl.printPlayerInfo(pl.playersList()));
     }
 }
