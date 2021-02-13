@@ -68,7 +68,7 @@ public class PokerLogic {
         //Loop through the number of players
         for(int i = 0; i < playerNames.size(); i++){
             //Create a temporary player (10000 default chips, they haven't lost yet)
-            PlayerClass tempPlayer = new PlayerClass(i, playerNames.get(i), 10000, false);
+            PlayerClass tempPlayer = new PlayerClass(i, playerNames.get(i), null, 10000, false);
 
             //Add that temporary player to the list of players
             players.add(tempPlayer);
@@ -82,20 +82,7 @@ public class PokerLogic {
         StringBuilder result = new StringBuilder();
 
         for(PlayerClass p : players){
-            //Add a new line
-            result.append("\n");
-
-            //Add the Player Number
-            result.append("\nPlayerNum: ").append(p.getPlayerNum());
-
-            //Add the Player Name
-            result.append("\nPlayerName: ").append(p.getPlayerName());
-
-            //Add the Player's chip count
-            result.append("\nPlayer Chips: ").append(p.getPlayerChips());
-
-            //Say if the Player has lost
-            result.append("\nPlayer Lost? ").append(p.getPlayerLost());
+            result.append(p.toString());
         }
 
         return result.toString();

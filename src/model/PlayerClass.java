@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 /**
  * Player Dataclass
  *
@@ -18,9 +20,7 @@ public class PlayerClass {
     private String playerName;
 
     /** Player's hand */
-    //not sure how to do this
-    //Maybe another dataclass for the deck of cards?
-    //private something playerHand;
+    private Card[] playerHand;
 
     /** Player's chips */
     private int playerChips;
@@ -35,7 +35,7 @@ public class PlayerClass {
     public PlayerClass() {
         this.playerNum = -1;
         this.playerName = "";
-        //this.playerHand = null;
+        this.playerHand = null;
         this.playerChips = 0;
         this.playerLost = false;
     }
@@ -44,13 +44,14 @@ public class PlayerClass {
      * Constructor
      * @param playerNum - the player's number
      * @param playerName - the player's name
+     * @param playerHand - the player's current hand
      * @param playerChips - the player's chip count
      * @param playerLost - if the player has lost or not
      */
-    public PlayerClass(int playerNum, String playerName, int playerChips, boolean playerLost) {
+    public PlayerClass(int playerNum, String playerName, Card[] playerHand, int playerChips, boolean playerLost) {
         this.playerNum = playerNum;
         this.playerName = playerName;
-        //this.playerHand = playerHand;
+        this.playerHand = playerHand;
         this.playerChips = playerChips;
         this.playerLost = playerLost;
     }
@@ -75,7 +76,7 @@ public class PlayerClass {
      * Get the player's hand
      * @return the player's hand
      */
-    //public something getPlayerHand() { return this.playerHand; }
+    public Card[] getPlayerHand() { return this.playerHand; }
 
     /**
      * getPlayerChips
@@ -106,7 +107,7 @@ public class PlayerClass {
      * Set's the player's hand to the given cards
      * @param cards - the cards dealt to the player
      */
-    //public void setPlayerHand(cards) { }
+    public void setPlayerHand(Card[] cards) { this.playerHand = cards; }
 
     /**
      * setPlayerChips
@@ -127,6 +128,26 @@ public class PlayerClass {
 
     @Override
     public String toString() {
-        return String.valueOf(this.playerNum);
+        StringBuilder result = new StringBuilder();
+
+        //Add a new line
+        result.append("\n");
+
+        //Add the Player Number
+        result.append("\nPlayer's Num: ").append(this.getPlayerNum());
+
+        //Add the Player Name
+        result.append("\nPlayer's Name: ").append(this.getPlayerName());
+
+        //Add the Player's Hand
+        result.append("\nPlayer's Hand: ").append((Arrays.toString(this.getPlayerHand())));
+
+        //Add the Player's chip count
+        result.append("\nPlayer's Chips: ").append(this.getPlayerChips());
+
+        //Say if the Player has lost
+        result.append("\nHas the Player Lost? ").append(this.getPlayerLost());
+
+        return result.toString();
     }
 }
